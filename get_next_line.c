@@ -23,7 +23,7 @@ void	leftover_logic(char **line, char **leftover, int *i, int *j)
 		}
 		if ((*leftover)[*j] == '\n')
 		{
-			temp = strdup(*leftover + *j + 1);
+			temp = ft_strdup(*leftover + *j + 1);
 			free(*leftover);
 			*leftover = temp;
 			(*line)[(*i)++] = '\n';
@@ -39,7 +39,7 @@ void	leftover_logic(char **line, char **leftover, int *i, int *j)
 
 char	*leftover_in_line_logic(char **leftover, char **line, int *j)
 {
-	*leftover = strdup(*line + *j + 1);
+	*leftover = ft_strdup(*line + *j + 1);
 	if (*leftover == NULL)
 	{
 		free(*line);
@@ -59,7 +59,7 @@ char	*line_logic(int fd, char **line, int *i, int *j)
 	while (read_chars > 0)
 	{
 		*i += read_chars;
-		if (strchr(*line, '\n'))
+		if (ft_strchr(*line, '\n'))
 		{
 			*j = *i - read_chars;
 			while (*j < *i && (*line)[*j] != '\n')
@@ -69,10 +69,9 @@ char	*line_logic(int fd, char **line, int *i, int *j)
 				return (leftover_in_line_logic(&leftover, line, j));
 			}
 		}
-		*line = realloc(*line, (*i + BUFFER_SIZE + 1) * sizeof(char));
-		if (*line == NULL)
+		*line = ft_realloc(*line, *i + BUFFER_SIZE + 1, (*i + BUFFER_SIZE + 1) * sizeof(char));		if (*line == NULL)
 			return (NULL);
-		bzero(*line + *i, BUFFER_SIZE + 1);
+		ft_bzero(*line + *i, BUFFER_SIZE + 1);
 		read_chars = read(fd, *line + *i, BUFFER_SIZE);
 	}
 	return (NULL);
@@ -90,9 +89,9 @@ char	*get_next_line(int fd)
 	if (fd < 0)
 		return (NULL);
 	line = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	bzero(line, BUFFER_SIZE + 1);
+	ft_bzero(line, BUFFER_SIZE + 1);
 	leftover_logic(&line, &leftover, &i, &j);
-	if (strchr(line, '\n'))
+	if (ft_strchr(line, '\n'))
 	{
 		return (line);
 	}
